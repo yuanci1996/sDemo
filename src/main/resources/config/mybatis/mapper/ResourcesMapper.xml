@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.mapper.ResourcesMapper">  
+	
+	<select id="loadMenu" parameterType="com.pojo.Resources" resultType="com.pojo.Resources">
+		SELECT re.id,re.name,re.parentId,re.resUrl,re.resKey,u.username   
+		FROM t_resources re,t_role_resources rr,t_user_role ur,t_user u
+		WHERE re.id = rr.resourcesId AND rr.roleId = ur.roleId
+		AND ur.userId =u.id 
+		<if test="username != null and username != ''">
+			AND u.username=#{username}
+		</if>
+		<if test="type != null">
+			AND re.type= #{type} 
+		</if>
+		<if test="resUrl != null and resUrl != ''">
+			AND re.resUrl= #{resUrl}
+		</if>
+		GROUP BY re.id
+		ORDER BY re.sort ASC
+	</select>
+</mapper> 

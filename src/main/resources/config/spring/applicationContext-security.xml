@@ -1,0 +1,32 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security.xsd">
+        <!--  -->
+    <http pattern="/css/**" security="none" />  
+    <http pattern="/js/**" security="none" />  
+
+    <http use-expressions="false">
+        <!-- 登录页面不需要控制权限 -->
+        <intercept-url pattern="/user/login" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <!-- 访问其他所有页面都需要有USER权限 
+        <intercept-url pattern="/**" access="ROLE_sys_user_manage" />-->
+        <!-- 配置登录页面地址login-page、登录失败后的跳转地址authentication-failure-url -->
+        <form-login login-page='/user/login' login-processing-url="/login.do" authentication-failure-url='/user/login.jsp?error' 
+        default-target-url="/index.jsp" authentication-success-forward-url="/user/welcome.do"/>
+        <!-- 登出功能 -->
+        <logout invalidate-session="true" logout-url="/logout.do" logout-success-url="/user/login"/>
+        <remember-me />  
+        <csrf disabled="true" />
+
+    </http>
+    <!--  -->
+<authentication-manager>
+    <authentication-provider user-service-ref='userDetailsService' />
+</authentication-manager>
+<beans:bean id="userDetailsService" class="com.springframe.security.userservice.MyUserDetailsService" />
+
+</beans:beans>

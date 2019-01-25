@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mapper.JkBuildMapper">
+    <resultMap type="com.pojo.JkBuild" id="buildResult">
+        <id property="buildId" column="id"/>
+        <result property="buildName" column="build_name"/>
+        <result property="projectId" column="project_id"/>
+        <result property="projectName" column="project_name"/>
+        <result property="floor" column="floor"/>
+        <result property="houseNum" column="house_num"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		id,build_name,project_id,project_name,floor,house_num
+	</sql>
+
+    <insert id="insertJkBuildList" parameterType="java.util.List">
+        INSERT INTO jk_build
+        (<include refid="Base_Column_List"></include>)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.buildId},#{item.buildName},#{item.projectId},#{item.projectName},#{item.floor},#{item.houseNum})
+        </foreach>
+    </insert>
+
+</mapper>
